@@ -10,6 +10,7 @@ public class Authenticator {
       throw new LoginException("Username not found");  
     }
 
+    // .equals() is best for comparing two opbjects for equality
     if(password.equals(customer.getPassword())){
       customer.setAuthenticated(true);
       return customer;
