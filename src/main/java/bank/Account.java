@@ -38,17 +38,33 @@ public class Account {
     this.balance = balance;
   }
 
+  // if a method throws a runtime exception, it must be declared in the header
+  // You can use built-in Java excepetions, or build your own exceptions
   public void deposit(double amount) throws AmountException {
     if(amount < 1){
+      // valid way to throw an exception
       throw new AmountException("The minimum deposit is 1.00");
     }
+    // executeUpdate() is used to delete a record from a database
     else {
       double newBalance = balance + amount;
       setBalance(newBalance);
+      DataSource.updateAccountBalance(id, newBalance);
     }
   }
   
-  public void withdraw(double amount) {
+  public void withdraw(double amount) throws AmountException {
 
+    if(amount < 0){
+      throw new AmountException("The withdrawal amount must be greater than 0.");
+    }
+    else if(amount > getBalance()){
+      throw new AmountException("You do not have sufficient funds for this withdrawal");
+    }
+    else {
+      double newBalance = balance - amount;
+      setBalance(newBalance);
+      DataSource.updateAccountBalance(id, newBalance);
+    }
   }
 }
